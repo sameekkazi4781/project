@@ -1,0 +1,48 @@
+sidebarPanel(
+
+
+selectInput("dataset","select dataset",choices = c("x2","a1","a2")), 
+        numericInput("obs","Select no of observations",6),
+        submitButton("UPDATE!")
+        
+)
+
+
+
+
+,mainPanel(tabsetPanel(
+        type="tab",
+ tabPanel("Structure",h2(textOutput("dataname")),tableOutput("table") ,downloadButton("downdata","Download data"),h2(textOutput("observation")),tableOutput("view")),
+       
+
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+funtion()
+{
+
+  output$dataname<-renderText({
+      paste("Table of dataset ",input$dataset)
+    })
+   output$observation<-renderText({
+     paste("first",input$obs,"of dataset",input$dataset)
+   })
+   output$view<-renderTable({
+     head(get(input$dataset),n=input$obs)
+   })
+    
+}       
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,51 @@
+ui.R is same as previous vedio
+
+
+
+
+//////////////////////////
+//////////////////////////////////////
+/////////////////////////
+
+
+
+ # Merging the data files using rbind
+  # assumption that all files have same columns
+  datamerge <- reactive({
+    
+    if(is.null(input$file))
+      return()
+    else 
+    {
+      nfiles = nrow(input$file) 
+      csv = list()
+      for (i in 1 : nfiles)
+      {
+        
+        csv[[i]] = read.csv(input$file$datapath[i])
+      }
+    do.call(rbind, csv) # rbind the datasets
+      
+    }
+  })
+  
+  ## Display the merged data
+  output$newdata <- renderTable({
+    datamerge()
+  })
+  
+
+output$tb <- renderUI({
+    if(is.null(input$file)) {return()}
+    else
+      tabsetPanel(
+        tabPanel("Input File Object DF ", tableOutput("filedf"), tableOutput("filedf2")),
+        tabPanel("Input File Object Structure", verbatimTextOutput("fileob")),
+        tabPanel("Dataset", tableOutput("table")),
+        tabPanel("Summary Stats", verbatimTextOutput("summ")),
+#new        tabPanel("Merged Dataset", downloadButton("download", "Download" ), tableOutput("newdata"))
+        )
+  })
+
+
+###further is same as previous

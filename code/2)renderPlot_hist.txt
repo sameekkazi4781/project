@@ -1,0 +1,63 @@
+code for histogarm 
+from exel file 
+select any one clomn
+selct color
+and range of x axis 
+
+
+
+shinyServer(
+  function(input,output)
+  {
+    #output$myname<-renderText(input$name)
+    
+  #  output$myslider<-renderText(
+   #   paste("you selected the value",input$slider))
+    output$myhist <-renderPlot({
+      colmn<-as.numeric(input$data)
+       hist(x2[,colmn],10,col=input$color,main="histogram for excle data set",xlab=names(x2[colmn]))
+      #hist(x2[,colmn],breaks = seq(0,max(x2[,colmn],l=input$slider+1)))
+      
+    })
+    
+  }
+  
+  
+)
+
+
+
+
+///////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////
+
+
+
+library(shiny) 
+shinyUI(
+  fluidPage(
+    titlePanel( title=h2("Demonstartionn of renderd plot",align="center")),
+    
+    sidebarLayout(
+      
+      sidebarPanel(
+        "Enter Requirements",
+        selectInput("data","Select your required data VS Product Seelling Price",choices = c("Revenue"=10,"Profits"=11,"Selling Quantity"=4)),
+        sliderInput("slider","Select number of bins from slider",min=0,max=100,value = 0),
+        radioButtons("color","Select your Graph's color",choices = c("Green","REd","Yellow"))
+        
+      ),mainPanel(
+        plotOutput("myhist")
+      )
+    )#sidebar layout
+    
+    
+    
+  )#fluid page
+  
+  
+  
+  
+  
+)#shiny UI

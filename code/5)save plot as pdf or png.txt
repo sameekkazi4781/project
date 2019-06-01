@@ -1,0 +1,105 @@
+save plot as pdf or png
+////////////////////////
+
+shinyServer(
+  function(input,output)
+  {
+    x<-reactive({
+      x2[,as.numeric(input$xval)]
+    })
+    y<-reactive({
+      x2[,as.numeric(input$yval)]
+    })
+    #output$myname<-renderText(input$name)
+    
+    #  output$myslider<-renderText(
+    #   paste("you selected the value",input$slider))
+   
+    output$plot<-renderPlot({
+     #x<-x2[,as.numeric(input$xval)]
+     #y<-x2[,as.numeric(input$yval)]
+      plot(x(),y())
+       
+    })
+     output$data<-renderTable(
+      x2[c(10,11,14)]
+    )
+    output$summ<-renderPrint({
+      colmn<-as.numeric(input$sry)
+      summary(x2[colmn])}
+      
+    )    
+    output$myhist <-renderPlot({
+      colmn<-as.numeric(input$data)
+      hist(x2[,colmn],10,col=input$color,main="histogram for excle data set",xlab=names(x2[colmn]))
+      #hist(x2[,colmn],breaks = seq(0,max(x2[,colmn],l=input$slider+1)))
+      
+    })
+    
+    output$down<-downloadHandler(
+      
+      
+      filename = function()
+      {paste("",input$format,sep='.')
+        
+      },
+      content = function(file){
+        if(input$format=="pdf")
+          pdf(file)
+        else
+            png(file)
+        plot(x(),y())
+        dev.off()
+      }
+    )
+  }#function
+  )#shiny serveer
+
+
+///////////////////////
+//////////////////////////////////////////
+///////////////////
+////////////////////////////////////
+
+library(shiny) 
+shinyUI(
+  fluidPage(
+    titlePanel( title=h2("Demonstartionn of renderd plot",align="center")),
+    
+    sidebarLayout(
+      
+      sidebarPanel(
+        "Enter Requirements",
+        selectInput("data","Select your required data for plot",choices = c("Revenue"=10,"Profits"=11,"Selling Quantity"=4)),
+        selectInput("sry","Select your required data for Summary",choices = c("Revenue"=10,"Profits"=11,"Selling Quantity"=4)),
+        selectInput("xval","Select  X-AXIS",choices = c("Revenue"=10,"Profits"=11,"Selling Quantity"=4)),
+        selectInput("yval","Select  Y-AXIS",choices = c("Revenue"=10,"Profits"=11,"Selling Quantity"=4)),
+        br(),
+        #sliderInput("slider","Select number of bins from slider",min=0,max=100,value = 0),
+        #br(),
+        radioButtons("color","Select your Graph's color",choices = c("Green","REd","Yellow")),
+        radioButtons("format","Select your Downloading Format",choices = c("pdf","png"))
+        
+      ),mainPanel(tabsetPanel(
+        type="tab",
+        tabPanel("Summary",verbatimTextOutput ("summ")),
+        tabPanel("Structure",tableOutput("data")),
+        tabPanel("plot",  plotOutput("myhist")),
+        tabPanel("ScatterPLOT",plotOutput("plot"),downloadButton("down","Download Plot"))
+        
+        
+      )
+        
+      
+      )
+    )#sidebar layout
+    
+    
+    
+  )#fluid page
+  
+  
+  
+  
+  
+)#shiny UI

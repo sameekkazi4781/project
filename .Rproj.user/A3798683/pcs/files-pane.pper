@@ -1,0 +1,9 @@
+{
+    "path" : "~/abc",
+    "sortOrder" : [
+        {
+            "ascending" : true,
+            "columnIndex" : 2
+        }
+    ]
+}

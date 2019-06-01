@@ -1,0 +1,19 @@
+sidebarpanel(
+conditionalPanel(condition="input.tabselected==1",radioButtons("color","Select your Graph's color",choices = c("Green","REd","Yellow")),selectInput("data","Select your required data for plot",choices = c("Revenue"=10,"Profits"=11,"Selling Quantity"=4)),radioButtons("format","Select your Downloading Format",choices = c("pdf","png"))),
+  conditionalPanel(condition="input.tabselected==2", selectInput("xval","Select  X-AXIS",choices = c("Revenue"=10,"Profits"=11,"Selling Quantity"=4)),selectInput("yval","Select  Y-AXIS",choices = c("Revenue"=10,"Profits"=11,"Selling Quantity"=4)),radioButtons("format","Select your Downloading Format",choices = c("pdf","png"))),
+  conditionalPanel(condition="input.tabselected==3",selectInput("sry","Select your required data for Summary",choices = c("Revenue"=10,"Profits"=11,"Selling Quantity"=4))),
+  conditionalPanel(condition="input.tabselected==4",selectInput("dataset","select dataset",choices = c("x2","a1","a2")),uiOutput("vx"),  numericInput("obs","Select no of observations",6),actionButton("action","update!")   )
+  
+),
+
+mainPanel(tabsetPanel(
+        type="tab",
+     
+      tabPanel("plot",value=1,  plotOutput("myhist")),
+      tabPanel("ScatterPLOT",value=2,plotOutput("plot"),downloadButton("down","Download Plot")),
+        tabPanel("Summary",value=3,verbatimTextOutput ("summ")),
+        tabPanel("Structure",value=4,h2(textOutput("dataname")),tableOutput("table") ,downloadButton("downdata","Download data"),h2(textOutput("observation")),tableOutput("view")),
+     
+      
+      id = "tabselected"
+)

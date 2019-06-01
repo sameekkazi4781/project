@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1558944061706.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "C5DE3EF6",
+    "lastKnownWriteTime" : 1559298999,
+    "last_content_update" : 1559298999393,
+    "path" : "~/abc/ui.R",
+    "project_path" : "ui.R",
+    "properties" : {
+        "cursorPosition" : "64,42",
+        "scrollLine" : "0",
+        "tempName" : "Untitled2"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

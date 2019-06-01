@@ -1,0 +1,5 @@
+tabsetPanel(
+        # using iframe along with tags() within tab to display pdf with scroll, height and width could be adjusted
+        tabPanel("Reference", 
+                 tags$iframe(style="height:400px; width:100%; scrolling=yes", 
+                  src="https://cran.r-project.org/doc/manuals/r-release/R-intro.pdf"))

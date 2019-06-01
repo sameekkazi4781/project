@@ -1,0 +1,87 @@
+
+
+      sidebarPanel(
+        "Enter Requirements",
+        #file upload
+        fileInput("file","Upload the file",multiple = TRUE), # fileinput() function is used to get the file upload contorl option
+        tags$img(src='xl2.jpg', heigth=50, width=50),# image tag
+        helpText("Default max. file size is 5MB"),
+        tags$hr(),
+        uiOutput("selectfile")),
+mainPanel(tabsetPanel(
+        type="tab",
+tabPanel("multiple files", uiOutput("tS"))
+
+)
+
+//////////////////////////////////////
+//////////////////////////////////////////////
+////////////////////////////////////
+
+
+
+  function(input,output)
+  { })
+    #details of file uploaded
+    output$filedf <- renderTable({
+      if(is.null(input$file)){return ()}
+      input$file
+    })
+    
+    
+    # Extract the file path for file
+    output$filedf2 <- renderTable({
+      if(is.null(input$file)){return ()}
+      input$file$datapath 
+    })
+   
+    
+     ## Side bar select input widget coming through renderUI()
+  
+    # Following code displays the select input widget with the list of file loaded by the user
+    #multiple file selection
+    
+    output$selectfile <- renderUI({
+      if(is.null(input$file)) {return()}
+      list(hr(), 
+           helpText("Select the files for which you need to see data and summary stats"),
+           selectInput("Select", "Select", choices=input$file$name)
+      )
+      
+    })
+   
+    
+    #### selcted table displayed from multiple files
+    output$tablee <- renderTable({ 
+      if(is.null(input$file)){return()}
+      read.csv(input$file$datapath[input$file$name==input$Select], sep=",", header = TRUE )
+    })
+ 
+    ##### Summary Stats for multiple file selction##
+    output$summm <- renderPrint({
+      if(is.null(input$file)){return()}
+      summary(read.csv(input$file$datapath[input$file$name==input$Select], sep=",", header = F ))
+    })
+    
+   
+    
+   
+    
+    ##################################
+    ### this contain multile tabs 
+        ## multiple selcted files diplayed
+    output$tS <- renderUI({
+      if(is.null(input$file)) 
+        h1("NO FILES SELECTED ", tags$img(src='xl1.png', heigth=500, width=1000))
+      else
+        tabsetPanel(
+          tabPanel("Input File Object DF ",  tableOutput("filedf"),  tableOutput("filedf2")),
+          #tabPanel("Input File Object Structure", verbatimTextOutput("fileob")),
+           tabPanel("Dataset", tableOutput("tablee")),
+          tabPanel("Summary Stats", verbatimTextOutput("summm"))
+        )
+    })
+    
+ ####################################
+    ####   new file ka kam khatam###########
+    }

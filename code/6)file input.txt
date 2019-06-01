@@ -1,0 +1,75 @@
+
+sidebarPanel(
+        "Enter Requirements",
+        #file upload
+        fileInput("file","Upload the file"), # fileinput() function is used to get the file upload contorl option
+        helpText("Default max. file size is 5MB"),
+        tags$hr(),
+        h5(helpText("Select the read.table parameters below")),
+       
+       ),
+mainPanel(tabsetPanel(
+        type="tab",
+      tabPanel("new File2", uiOutput("tb")),
+)
+
+??????????????????????????
+/?//////////////////////////
+//////////////////////
+
+function(input,output)
+  {
+    # file$datapath -> gives the path of the file
+    data <- reactive({
+      file1 <- input$file
+      if(is.null(file1)){return()} 
+      read.csv(file=file1$datapath, sep=",", header = TRUE)
+      
+    })
+    
+    # this reactive output contains the summary of the dataset and display the summary in table format
+    output$filedf <- renderTable({
+      if(is.null(data())){return ()}
+      input$file
+    })#details of file uploaded
+    
+    # this reactive output contains the summary of the dataset and display the summary in table format
+    output$sum <- renderTable({
+      if(is.null(data())){return ()}
+      summary(data())
+      
+    })
+    
+    # This reactive output contains the dataset and display the dataset in table format
+    output$tabl <- renderTable({
+      if(is.null(data())){return ()}
+      data()
+    })
+    
+    # the following renderUI is used to dynamically generate the tabsets when the file is loaded. Until the file is loaded, app will not show the tabset.
+    output$tb <- renderUI({
+      if(is.null(data()))
+        h5("Powered by", tags$img(src='RStudio-Ball.png', heigth=200, width=200))
+      else
+        tabsetPanel(tabPanel("About file", tableOutput("filedf")),
+                    tabPanel("Data", tableOutput("tabll")),
+                    tabPanel("Summary", tableOutput("sum")))
+    })
+    ##################################
+    # the following renderUI is used to dynamically generate the tabsets when the file is loaded. Until the file is loaded, app will not show the tabset.
+    output$tb <- renderUI({
+      if(is.null(data()))
+        h5("Powered by", tags$img(src='RStudio-Ball.png', heigth=200, width=200))
+      else
+        tabsetPanel(type="tab",
+          tabPanel("About file",tableOutput("filedf")),
+          tabPanel("new File", tableOutput("tabl")),
+          tabPanel("new File", tableOutput("sum"))
+                   
+                  
+          )
+    })#### sub tabs of newfile
+    
+    ####################################
+    ####   new file ka kam khatam###########
+  
